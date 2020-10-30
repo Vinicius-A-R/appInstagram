@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+
+import imgLike from '../../assets/img/like.png';
+import imgLiked from '../../assets/img/likeada.png';
 
 export default function List({ data }) {
   // const { name, description, imgPerfil, imgPublish, liked, likes } = data;
-  const [feed, setFeed] = useState(data)
+  const [feed, setFeed] = useState(data);
 
   const showLikes = (countLikes) => {
     if (countLikes <= 0) {
@@ -17,25 +20,39 @@ export default function List({ data }) {
     );
   };
 
+  const like = () => {
+    if (feed.liked === true) {
+      setFeed((prev) => ({ ...prev, likes: --prev.likes, liked: false }));
+    } else {
+      setFeed((prev) => ({ ...prev, liked: true, likes: prev.likes + 1 }));
+    }
+  };
+
+  const liked = () => {
+    return feed.liked
+      ? require('../../assets/img/like.png')
+      : require('../../assets/img/likeada.png');
+  };
+
   return (
     <View style={styles.areaFeed}>
       <View style={styles.viewPerfil}>
-        <Image style={styles.pic} source={{ uri: imgPerfil }} />
+        <Image style={styles.pic} source={{ uri: feed.imgPerfil }} />
 
-        <Text style={styles.nameUser}>{name}</Text>
+        <Text style={styles.nameUser}>{feed.name}</Text>
       </View>
 
       <Image
         resizeMode="cover"
         style={styles.picPublish}
-        source={{ uri: imgPublish }}
+        source={{ uri: feed.imgPublish }}
       />
 
       <View style={styles.areaBtn}>
-        <TouchableOpacity onPress={() => }>
+        <TouchableOpacity onPress={() => like()}>
           <Image
             style={styles.iconsAct}
-            source={require('../../assets/img/like.png')}
+            source={feed.liked ? imgLiked : imgLike}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnSend}>
@@ -46,19 +63,21 @@ export default function List({ data }) {
         </TouchableOpacity>
       </View>
 
-      {showLikes(likes)}
+      {showLikes(feed.likes)}
 
       <View style={styles.footer}>
-        <Text style={styles.footerName}>{name}</Text>
+        <Text style={styles.footerName}>{feed.name}</Text>
 
-        <Text style={styles.footerDescription}>{description}</Text>
+        <Text style={styles.footerDescription}>{feed.description}</Text>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  areaFeed: {},
+  areaFeed: {
+    marginTop: 16,
+  },
   viewPerfil: {
     flex: 1,
     flexDirection: 'row',
@@ -66,13 +85,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   pic: {
-    width: 50,
-    height: 50,
+    width: 32,
+    height: 32,
     marginRight: 8,
     borderRadius: 25,
   },
   nameUser: {
-    fontSize: 24,
+    fontSize: 16,
     textAlign: 'left',
     color: '#000',
   },
