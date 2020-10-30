@@ -13,6 +13,7 @@
 
 1. start your emulator
 2. npx react-native upgrade
-3. npx react-native start
-4. npx react-native run-android
+   1. command to create ios and android folders
+3. npx react-native run-android
+4. npx react-native start
 
